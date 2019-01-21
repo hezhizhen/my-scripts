@@ -1,4 +1,4 @@
-package tools
+package utilz
 
 // Days calculates total days given initial number and frequency
 func Days(init, freq int) int {

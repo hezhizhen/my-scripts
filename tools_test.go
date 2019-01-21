@@ -1,12 +1,12 @@
-package tools_test
+package utilz_test
 
 import (
 	"fmt"
 	"testing"
 
-	tools "github.com/hezhizhen/tiny-tools"
+	utilz "github.com/hezhizhen/tiny-tools"
 )
 
 func TestDays(t *testing.T) {
-	fmt.Println(tools.Days(41, 7))
+	fmt.Println(utilz.Days(41, 7))
 }
