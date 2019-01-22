@@ -1,12 +1,20 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
-	utilz "github.com/hezhizhen/tiny-tools/utilz"
+	"github.com/hezhizhen/tiny-tools/utilz"
 )
 
 func main() {
 	fmt.Println("hello")
-	fmt.Println(utilz.Days(299, 7))
+	err := errors.New("this is a fake error")
+	defer func() {
+		panicV := recover()
+		if panicV != nil {
+			fmt.Println("recover from panic:", panicV)
+		}
+	}()
+	utilz.Check(err)
 }
