@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	utilz "github.com/hezhizhen/tiny-tools"
+	utilz "github.com/hezhizhen/tiny-tools/utilz"
 )
 
 func main() {
