@@ -29,6 +29,7 @@ func retrieveCategoriesAndFirstNotDoneFile() map[string]fileInfo {
 	return ret
 }
 
+// execute `go install ./...` whenever there is an update
 func main() {
 	flag.Parse()
 	args := flag.Args()

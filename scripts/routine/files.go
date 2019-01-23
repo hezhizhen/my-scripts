@@ -37,5 +37,11 @@ var files = map[string][]fileInfo{
 			Done:     false,
 		},
 	},
-	"podcast": []fileInfo{},
+	"podcast": []fileInfo{
+		{
+			FileName: "15482471177025.md",
+			Title:    "忽左忽右",
+			Done:     false,
+		},
+	},
 }
