@@ -9,9 +9,18 @@ import (
 	"github.com/hezhizhen/tiny-tools/utilz"
 )
 
+type library string
+
+const (
+	MWeb3 library = "/Users/hezhizhen/Dropbox/MWeb3/docs/"
+	MWeb2 library = "/Users/hezhizhen/Dropbox/MWeb/docs/"
+	nvALT library = "/Users/hezhizhen/Dropbox/Notational Data/"
+)
+
 type fileInfo struct {
 	FileName string
-	Title    string
+	Title    string // TODO: remove
+	Library  library
 	Done     bool
 }
 
@@ -27,6 +36,10 @@ func retrieveCategoriesAndFirstNotDoneFile() map[string]fileInfo {
 		}
 	}
 	return ret
+}
+
+func retrieveTitle(filename string) (titlt string) {
+	return
 }
 
 // execute `go install ./...` whenever there is an update
