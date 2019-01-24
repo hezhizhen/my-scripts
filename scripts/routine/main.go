@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/hezhizhen/tiny-tools/utilz"
 )
@@ -19,9 +21,25 @@ const (
 
 type fileInfo struct {
 	FileName string
-	Title    string // TODO: remove
 	Library  library
 	Done     bool
+}
+
+func (fi fileInfo) filePath() string {
+	return string(fi.Library) + fi.FileName
+}
+
+func (fi fileInfo) title() string {
+	f, err := os.Open(fi.filePath())
+	utilz.Check(err)
+	defer f.Close()
+
+	bf := bufio.NewReader(f)
+	line, err := bf.ReadString('\n')
+	utilz.Check(err)
+	line = strings.TrimSpace(line)
+	line = strings.TrimPrefix(line, "# ")
+	return line
 }
 
 func retrieveCategoriesAndFirstNotDoneFile() map[string]fileInfo {
@@ -38,10 +56,6 @@ func retrieveCategoriesAndFirstNotDoneFile() map[string]fileInfo {
 	return ret
 }
 
-func retrieveTitle(filename string) (titlt string) {
-	return
-}
-
 // execute `go install ./...` whenever there is an update
 func main() {
 	flag.Parse()
@@ -53,7 +67,8 @@ func main() {
 		// help
 		fmt.Println("Available arguments:")
 		for category, f := range fileMap {
-			fmt.Printf("\t%-18s%s\n", category, f.Title) // 18 is the supposed maximum length of categories
+			// 18 is the supposed maximum length of categories
+			fmt.Printf("\t%-18s%s\n", category, f.title())
 		}
 		os.Exit(0)
 	case 1:
@@ -63,12 +78,11 @@ func main() {
 		os.Exit(1)
 	}
 	// check if arguemnt is correct
-	if _, exist := fileMap[args[0]]; !exist {
+	f, exist := fileMap[args[0]]
+	if !exist {
 		panic(fmt.Sprintf("Unknown category: %s", args[0]))
 	}
-	// set file path
-	notePath := "/Users/hezhizhen/Dropbox/MWeb3/docs/" + fileMap[args[0]].FileName
 	// open it with macvim
-	cmd := exec.Command("mvim", notePath)
+	cmd := exec.Command("mvim", f.filePath())
 	utilz.Check(cmd.Run())
 }
