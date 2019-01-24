@@ -44,4 +44,11 @@ var files = map[string][]fileInfo{
 			Done:     false,
 		},
 	},
+	"qdaily": []fileInfo{
+		{
+			FileName: "15468295146931.md",
+			Library:  MWeb3,
+			Done:     false,
+		},
+	},
 }
