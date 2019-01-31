@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 
-	"github.com/hezhizhen/tiny-tools/utilz"
+	. "github.com/hezhizhen/tiny-tools/utilz"
 )
 
 type library string
@@ -31,12 +32,12 @@ func (fi fileInfo) filePath() string {
 
 func (fi fileInfo) title() string {
 	f, err := os.Open(fi.filePath())
-	utilz.Check(err)
+	Check(err)
 	defer f.Close()
 
 	bf := bufio.NewReader(f)
 	line, err := bf.ReadString('\n')
-	utilz.Check(err)
+	Check(err)
 	line = strings.TrimSpace(line)
 	line = strings.TrimPrefix(line, "# ")
 	return line
@@ -61,28 +62,41 @@ func main() {
 	flag.Parse()
 	args := flag.Args()
 	fileMap := retrieveCategoriesAndFirstNotDoneFile()
-	// check the number of arguments
-	switch len(args) {
-	case 0:
-		// help
+	// help
+	// TODO: use -h
+	if len(args) == 0 {
 		fmt.Println("Available arguments:")
 		for category, f := range fileMap {
 			// 18 is the supposed maximum length of categories
 			fmt.Printf("\t%-18s%s\n", category, f.title())
 		}
 		os.Exit(0)
-	case 1:
-		break
-	default:
-		fmt.Printf("Multiple arguments (%s). Only one argument is required.\n", args)
-		os.Exit(1)
 	}
-	// check if arguemnt is correct
-	f, exist := fileMap[args[0]]
+	// too many arguments
+	if len(args) > 2 {
+		panic(fmt.Sprintf("Multiple arguments (%s).\n", args))
+	}
+	// check category (first argument)
+	_, exist := fileMap[args[0]]
 	if !exist {
 		panic(fmt.Sprintf("Unknown category: %s", args[0]))
 	}
+	// check order (second argument)
+	order := 1
+	if len(args) == 2 {
+		tmp, err := strconv.Atoi(args[1])
+		Check(err)
+		// ignore invaid orders
+		if tmp > 1 {
+			order = tmp
+		}
+	}
+	fs := files[args[0]]
+	if len(fs) < order {
+		order = 1
+		fmt.Println("Out of range. Open the first one.")
+	}
 	// open it with macvim
-	cmd := exec.Command("mvim", f.filePath())
-	utilz.Check(cmd.Run())
+	cmd := exec.Command("mvim", fs[order-1].filePath())
+	Check(cmd.Run())
 }
