@@ -11,6 +11,11 @@ var files = map[string][]fileInfo{
 	},
 	"book": []fileInfo{
 		{
+			FileName: "15489327025566.md",
+			Library:  MWeb3,
+			Done:     false,
+		},
+		{
 			FileName: "15469501270291.md",
 			Library:  MWeb3,
 			Done:     false,

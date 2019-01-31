@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strconv"
@@ -37,6 +38,10 @@ func (fi fileInfo) title() string {
 
 	bf := bufio.NewReader(f)
 	line, err := bf.ReadString('\n')
+	if err == io.EOF {
+		// single line; ignore the error
+		err = nil
+	}
 	Check(err)
 	line = strings.TrimSpace(line)
 	line = strings.TrimPrefix(line, "# ")
