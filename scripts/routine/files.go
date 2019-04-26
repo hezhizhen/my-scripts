@@ -23,6 +23,11 @@ var files = map[string][]fileInfo{
 	},
 	"clippings": []fileInfo{
 		{
+			FileName: "15561193881065.md",
+			Library:  MWeb3,
+			Done:     false,
+		},
+		{
 			FileName: "15473875670445.md",
 			Library:  MWeb3,
 			Done:     false,

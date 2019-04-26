@@ -16,8 +16,11 @@ import (
 type library string
 
 const (
+	// MWeb3 is the current library
 	MWeb3 library = "/Users/hezhizhen/Dropbox/MWeb3/docs/"
+	// MWeb2 is the previous library
 	MWeb2 library = "/Users/hezhizhen/Dropbox/MWeb/docs/"
+	// nvALT is where I store drafts
 	nvALT library = "/Users/hezhizhen/Dropbox/Notational Data/"
 )
 
@@ -64,6 +67,8 @@ func retrieveCategoriesAndFirstNotDoneFile() map[string]fileInfo {
 
 // execute `go install ./...` whenever there is an update
 func main() {
+	var editor string
+	SelectEditor(&editor)
 	flag.Parse()
 	args := flag.Args()
 	fileMap := retrieveCategoriesAndFirstNotDoneFile()
@@ -101,7 +106,7 @@ func main() {
 		order = 1
 		fmt.Println("Out of range. Open the first one.")
 	}
-	// open it with macvim
-	cmd := exec.Command("mvim", fs[order-1].filePath())
+	// open it with external editor
+	cmd := exec.Command(RenameEditor(editor), fs[order-1].filePath())
 	Check(cmd.Run())
 }
