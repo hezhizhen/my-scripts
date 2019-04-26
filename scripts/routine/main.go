@@ -51,15 +51,14 @@ func (fi fileInfo) title() string {
 	return line
 }
 
-func retrieveCategoriesAndFirstNotDoneFile() map[string]fileInfo {
-	ret := map[string]fileInfo{}
+func retrieveCategoriesAndWIPFiles() map[string][]fileInfo {
+	ret := map[string][]fileInfo{}
 	for category, fs := range files {
 		for _, f := range fs {
 			if f.Done {
 				continue
 			}
-			ret[category] = f
-			break
+			ret[category] = append(ret[category], f)
 		}
 	}
 	return ret
@@ -71,14 +70,17 @@ func main() {
 	SelectEditor(&editor)
 	flag.Parse()
 	args := flag.Args()
-	fileMap := retrieveCategoriesAndFirstNotDoneFile()
+	filesMap := retrieveCategoriesAndWIPFiles()
 	// help
 	// TODO: use -h
 	if len(args) == 0 {
 		fmt.Println("Available arguments:")
-		for category, f := range fileMap {
+		for category, fs := range filesMap {
 			// 18 is the supposed maximum length of categories
-			fmt.Printf("\t%-18s%s\n", category, f.title())
+			fmt.Printf("    %s\n", category)
+			for i, f := range fs {
+				fmt.Printf("\t%d: %-18s\n", i+1, f.title())
+			}
 		}
 		os.Exit(0)
 	}
@@ -87,7 +89,7 @@ func main() {
 		panic(fmt.Sprintf("Multiple arguments (%s).\n", args))
 	}
 	// check category (first argument)
-	_, exist := fileMap[args[0]]
+	_, exist := filesMap[args[0]]
 	if !exist {
 		panic(fmt.Sprintf("Unknown category: %s", args[0]))
 	}
