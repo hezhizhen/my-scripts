@@ -76,10 +76,12 @@ func main() {
 	if len(args) == 0 {
 		fmt.Println("Available arguments:")
 		for category, fs := range filesMap {
-			// 18 is the supposed maximum length of categories
-			fmt.Printf("    %s\n", category)
-			for i, f := range fs {
-				fmt.Printf("\t%d: %-18s\n", i+1, f.title())
+			if len(fs) == 0 {
+				continue
+			}
+			fmt.Printf("\t%-18s%d: %s\n", category, 1, fs[0].title())
+			for i := 1; i < len(fs); i++ {
+				fmt.Printf("%-26s%d: %s\n", "", i+1, fs[i].title())
 			}
 		}
 		os.Exit(0)
