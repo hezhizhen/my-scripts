@@ -2,6 +2,13 @@ package main
 
 // files is a map from categories to their relevant notes (done and to do)
 var files = map[string][]fileInfo{
+	"todo": []fileInfo{
+		{
+			FileName: "15546245073427.md",
+			Library:  MWeb3,
+			Done:     false,
+		},
+	},
 	"coursera": []fileInfo{
 		{
 			FileName: "15457126390831.md",
