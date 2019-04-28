@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -64,6 +65,22 @@ func retrieveCategoriesAndWIPFiles() map[string][]fileInfo {
 	return ret
 }
 
+type category struct {
+	Name  string
+	files []fileInfo
+}
+
+func mapToSortedArray(raw map[string][]fileInfo) []category {
+	var ret []category
+	for cate, fs := range raw {
+		ret = append(ret, category{cate, fs})
+	}
+	sort.Slice(ret, func(i, j int) bool {
+		return ret[i].Name < ret[j].Name
+	})
+	return ret
+}
+
 // execute `go install ./...` whenever there is an update
 func main() {
 	var editor string
@@ -75,13 +92,14 @@ func main() {
 	// TODO: use -h
 	if len(args) == 0 {
 		fmt.Println("Available arguments:")
-		for category, fs := range filesMap {
-			if len(fs) == 0 {
+		categories := mapToSortedArray(filesMap)
+		for _, category := range categories {
+			if len(category.files) == 0 {
 				continue
 			}
-			fmt.Printf("\t%-18s%d: %s\n", category, 1, fs[0].title())
-			for i := 1; i < len(fs); i++ {
-				fmt.Printf("%-26s%d: %s\n", "", i+1, fs[i].title())
+			fmt.Printf("\t%-18s%d: %s\n", category.Name, 1, category.files[0].title())
+			for i := 1; i < len(category.files); i++ {
+				fmt.Printf("%-26s%d: %s\n", "", i+1, category.files[i].title())
 			}
 		}
 		os.Exit(0)
