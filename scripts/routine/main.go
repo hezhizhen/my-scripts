@@ -29,6 +29,7 @@ type fileInfo struct {
 	FileName string
 	Library  library
 	Done     bool
+	Related  *fileInfo
 }
 
 func (fi fileInfo) filePath() string {
@@ -130,5 +131,8 @@ func main() {
 	}
 	// open it with external editor
 	cmd := exec.Command(RenameEditor(editor), fs[order-1].filePath())
+	if fs[order-1].Related != nil {
+		cmd = exec.Command(RenameEditor(editor), fs[order-1].filePath(), fs[order-1].Related.filePath())
+	}
 	Check(cmd.Run())
 }

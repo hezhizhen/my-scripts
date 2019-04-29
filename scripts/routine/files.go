@@ -7,6 +7,11 @@ var files = map[string][]fileInfo{
 			FileName: "15546245073427.md",
 			Library:  MWeb3,
 			Done:     false,
+			Related: &fileInfo{
+				FileName: "15447091793464.md",
+				Library:  MWeb3,
+				Done:     false,
+			},
 		},
 	},
 	"coursera": []fileInfo{
