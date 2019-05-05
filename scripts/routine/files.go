@@ -44,7 +44,7 @@ var files = map[string][]fileInfo{
 		{
 			FileName: "15561193881065.md",
 			Library:  MWeb3,
-			Done:     false,
+			Done:     true,
 		},
 		{
 			FileName: "15473875670445.md",
