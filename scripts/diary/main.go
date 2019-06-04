@@ -10,9 +10,13 @@ import (
 	"github.com/hezhizhen/tiny-tools/utilz"
 )
 
+var (
+	items = []string{"星期", "农历", "天气", "位置", "睡眠", "如厕", "运动", "早餐", "午餐", "晚餐", "在读", "读完"}
+)
+
 func main() {
 	specifiedDate := flag.String("date", "", "specified date. e.g.: 2016.01.02")
-	editor := flag.String("editor", "mvim", "specified editor. e.g.: macvim, vimr, atom, code")
+	editor := flag.String("editor", "atom", "specified editor. e.g.: macvim, vimr, atom, code")
 	flag.Parse()
 	now := time.Now()
 	var err error
@@ -35,7 +39,11 @@ func main() {
 		f, err := os.Create(filepath)
 		utilz.Check(err)
 		// write title
-		f.WriteString(fmt.Sprintf("# %4d.%02d.%02d\n", now.Year(), now.Month(), now.Day()))
+		f.WriteString(fmt.Sprintf("# %4d.%02d.%02d\n\n", now.Year(), now.Month(), now.Day()))
+		// basic info
+		for _, item := range items {
+			f.WriteString(fmt.Sprintf("* %s：\n", item))
+		}
 		f.Close()
 	}
 	// open file
