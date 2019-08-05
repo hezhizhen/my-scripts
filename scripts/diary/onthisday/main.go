@@ -26,7 +26,7 @@ func main() {
 	if *editor == "code" {
 		*editor = "code-insiders"
 	}
-	dir := "/Users/hezhizhen/Dropbox/Diary"
+	dir := fmt.Sprintf("%s/Dropbox/Diary", utilz.GetHome())
 	files, err := filepath.Glob(dir + fmt.Sprintf("/*-%02d-%02d.md", now.Month(), now.Day()))
 	utilz.Check(err)
 	cmd := exec.Command(*editor, files...)

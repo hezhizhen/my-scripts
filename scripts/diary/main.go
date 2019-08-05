@@ -31,7 +31,7 @@ func main() {
 		*editor = "code-insiders"
 	}
 	// get right directory
-	dir := "/Users/hezhizhen/Dropbox/Diary"
+	dir := fmt.Sprintf("%s/Dropbox/Diary", utilz.GetHome())
 	filename := fmt.Sprintf("%4d-%02d-%02d.md", now.Year(), now.Month(), now.Day())
 	filepath := fmt.Sprintf("%s/%s", dir, filename)
 	_, err = os.Stat(filepath)
