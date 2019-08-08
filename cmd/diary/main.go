@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/hezhizhen/tiny-tools/utilz"
+	"github.com/hezhizhen/my-scripts/pkg/util"
 )
 
 var (
@@ -22,7 +22,7 @@ func main() {
 	var err error
 	if *specifiedDate != "" {
 		now, err = time.Parse("2006.01.02", *specifiedDate)
-		utilz.Check(err)
+		util.Check(err)
 	}
 	if *editor == "macvim" {
 		*editor = "mvim"
@@ -31,13 +31,13 @@ func main() {
 		*editor = "code-insiders"
 	}
 	// get right directory
-	dir := fmt.Sprintf("%s/Dropbox/Diary", utilz.GetHome())
+	dir := fmt.Sprintf("%s/Dropbox/Diary", util.GetHome())
 	filename := fmt.Sprintf("%4d-%02d-%02d.md", now.Year(), now.Month(), now.Day())
 	filepath := fmt.Sprintf("%s/%s", dir, filename)
 	_, err = os.Stat(filepath)
 	if os.IsNotExist(err) {
 		f, err := os.Create(filepath)
-		utilz.Check(err)
+		util.Check(err)
 		// write title
 		f.WriteString(fmt.Sprintf("# %4d.%02d.%02d\n\n", now.Year(), now.Month(), now.Day()))
 		// basic info
@@ -48,12 +48,12 @@ func main() {
 	}
 	// open file
 	f, err := os.OpenFile(filepath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	utilz.Check(err)
+	util.Check(err)
 	defer f.Close()
 	// append current time
 	_, err = f.WriteString(fmt.Sprintf("\n## %02d:%02d\n", now.Hour(), now.Minute()))
-	utilz.Check(err)
+	util.Check(err)
 	// open in macvim
 	cmd := exec.Command(*editor, filepath)
-	utilz.Check(cmd.Run())
+	util.Check(cmd.Run())
 }

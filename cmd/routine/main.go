@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	. "github.com/hezhizhen/tiny-tools/utilz"
+	"github.com/hezhizhen/my-scripts/pkg/util"
 )
 
 type library string
@@ -38,7 +38,7 @@ func (fi fileInfo) filePath() string {
 
 func (fi fileInfo) title() string {
 	f, err := os.Open(fi.filePath())
-	Check(err)
+	util.Check(err)
 	defer f.Close()
 
 	bf := bufio.NewReader(f)
@@ -47,7 +47,7 @@ func (fi fileInfo) title() string {
 		// single line; ignore the error
 		err = nil
 	}
-	Check(err)
+	util.Check(err)
 	line = strings.TrimSpace(line)
 	line = strings.TrimPrefix(line, "# ")
 	return line
@@ -85,7 +85,7 @@ func mapToSortedArray(raw map[string][]fileInfo) []category {
 // execute `go install ./...` whenever there is an update
 func main() {
 	var editor string
-	SelectEditor(&editor)
+	util.SelectEditor(&editor)
 	flag.Parse()
 	args := flag.Args()
 	filesMap := retrieveCategoriesAndWIPFiles()
@@ -118,7 +118,7 @@ func main() {
 	order := 1
 	if len(args) == 2 {
 		tmp, err := strconv.Atoi(args[1])
-		Check(err)
+		util.Check(err)
 		// ignore invaid orders
 		if tmp > 1 {
 			order = tmp
@@ -130,9 +130,9 @@ func main() {
 		fmt.Println("Out of range. Open the first one.")
 	}
 	// open it with external editor
-	cmd := exec.Command(RenameEditor(editor), fs[order-1].filePath())
+	cmd := exec.Command(util.RenameEditor(editor), fs[order-1].filePath())
 	if fs[order-1].Related != nil {
-		cmd = exec.Command(RenameEditor(editor), fs[order-1].filePath(), fs[order-1].Related.filePath())
+		cmd = exec.Command(util.RenameEditor(editor), fs[order-1].filePath(), fs[order-1].Related.filePath())
 	}
-	Check(cmd.Run())
+	util.Check(cmd.Run())
 }

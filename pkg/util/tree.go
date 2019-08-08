@@ -1,4 +1,4 @@
-package utilz
+package util
 
 // TreeNode is a node for a binary tree.
 type TreeNode struct {

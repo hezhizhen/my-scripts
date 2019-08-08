@@ -1,4 +1,4 @@
-package utilz
+package util
 
 // ListNode is a node for singly-linked list.
 type ListNode struct {

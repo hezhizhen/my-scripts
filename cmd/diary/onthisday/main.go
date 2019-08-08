@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/hezhizhen/tiny-tools/utilz"
+	"github.com/hezhizhen/my-scripts/pkg/util"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	var err error
 	if *specifiedDate != "" {
 		now, err = time.Parse("2006.01.02", *specifiedDate)
-		utilz.Check(err)
+		util.Check(err)
 	}
 	if *editor == "macvim" {
 		*editor = "mvim"
@@ -26,9 +26,9 @@ func main() {
 	if *editor == "code" {
 		*editor = "code-insiders"
 	}
-	dir := fmt.Sprintf("%s/Dropbox/Diary", utilz.GetHome())
+	dir := fmt.Sprintf("%s/Dropbox/Diary", util.GetHome())
 	files, err := filepath.Glob(dir + fmt.Sprintf("/*-%02d-%02d.md", now.Month(), now.Day()))
-	utilz.Check(err)
+	util.Check(err)
 	cmd := exec.Command(*editor, files...)
-	utilz.Check(cmd.Run())
+	util.Check(cmd.Run())
 }

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hezhizhen/tiny-tools/utilz"
+	"github.com/hezhizhen/my-scripts/pkg/util"
 )
 
 const (
@@ -54,7 +54,7 @@ func today(tasks []Task) []Task {
 func getFiles() []string {
 	var ret []string
 	fs, err := ioutil.ReadDir(MWeb3)
-	utilz.Check(err)
+	util.Check(err)
 	for _, f := range fs {
 		name := f.Name()
 		if strings.HasSuffix(name, ".md") {
@@ -69,7 +69,7 @@ func findTasks() []Task {
 	files := getFiles()
 	for _, file := range files {
 		bs, err := ioutil.ReadFile(MWeb3 + file)
-		utilz.Check(err)
+		util.Check(err)
 		content := string(bs)
 		if strings.Contains(content, "@DoNow") {
 			parts := strings.Split(content, "\n")
@@ -111,7 +111,7 @@ func findTasks() []Task {
 					}
 					// labels (only date now)
 					date, err := time.Parse("2006.01.02", cs[i])
-					utilz.Check(err)
+					util.Check(err)
 					task.Due = date
 
 				}
