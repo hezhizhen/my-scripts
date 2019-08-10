@@ -11,12 +11,14 @@ type OrderedMap struct {
 	slice []interface{}
 }
 
+// New creates a pointer pointing to an ordered map.
 func New() *OrderedMap {
 	return &OrderedMap{
 		hmap: make(map[interface{}]interface{}),
 	}
 }
 
+// Set adds or updates the record of given key.
 func (m *OrderedMap) Set(key, value interface{}) error {
 	if err := checkType(m.slice, key); err != nil {
 		return err
@@ -29,6 +31,7 @@ func (m *OrderedMap) Set(key, value interface{}) error {
 	return nil
 }
 
+// Delete deletes the record of given key.
 func (m *OrderedMap) Delete(key interface{}) error {
 	if err := checkType(m.slice, key); err != nil {
 		return err
@@ -48,6 +51,7 @@ func (m *OrderedMap) Delete(key interface{}) error {
 	return nil
 }
 
+// Pretty prints each key-value pair in one line.
 func (m *OrderedMap) Pretty() {
 	for _, key := range m.slice {
 		fmt.Printf("%v:%v\n", key, m.hmap[key])
